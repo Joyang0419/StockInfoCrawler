@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  mysql57:
+    image: amd64/mysql:5.7
+    networks:
+      stock-proxy:
+        ipv4_address: 172.20.0.101
+        aliases:
+          - database
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+    container_name: mysql57
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-proot' ]
+      timeout: 20s
+      retries: 10
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  migrate:
+    image: migrate/migrate
+    networks:
+      - stock-proxy
+    volumes:
+      - ../migrations:/migrations
+    command: [ "-path", "/migrations", "-database",  "mysql://root:root@tcp(database:3306)/test", "up"]
+    links:
+      - mysql57
+    depends_on:
+      mysql57:
+        condition: service_healthy
+
+  stockCrawler:
+    build:
+      context: ../
+      dockerfile: ./deployments/Dockerfile
+    image: stock_crawler
+    container_name: stock_crawler
+    networks:
+      stock-proxy:
+        ipv4_address: 172.20.0.102
+    depends_on:
+        migrate:
+            condition: service_completed_successfully
+
+
+networks:
+  stock-proxy:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24
