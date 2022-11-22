@@ -36,7 +36,7 @@ func main() {
 			fromDate = helpers.GetDate(time.Now().In(StockInfoCrawler.GreenwichLocation))
 		} else {
 			fromDate = helpers.GetDate(time.Now().In(StockInfoCrawler.GreenwichLocation))
-			toDate = dailyPriceCalculateDate.In(StockInfoCrawler.GreenwichLocation)
+			toDate = dailyPriceCalculateDate.AddDate(0, 0, 1).In(StockInfoCrawler.GreenwichLocation)
 		}
 		implements.DailyController.ScrapeDaily(stockCodes, fromDate, toDate)
 	})
