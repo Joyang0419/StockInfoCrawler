@@ -39,10 +39,7 @@ func (controller *ControllerDaily) ScrapeDaily(stockCodes []string, fromDate tim
 	for i := 0; i < len(stockCodes); i++ {
 		DailyModelChannel := make(chan models.DailyModel)
 		stockCode := stockCodes[i]
-		if i%10 == 0 {
-			log.Info(fmt.Sprintf("休息: %d秒", StockInfoCrawler.DailyPriceSleepSeconds))
-			time.Sleep(StockInfoCrawler.DailyPriceSleepSeconds * time.Second)
-		}
+		time.Sleep(StockInfoCrawler.DailyPriceSleepSeconds * time.Second)
 		wg.Add(1)
 		go func() {
 			defer wg.Done()

@@ -13,7 +13,7 @@ docker-compose up --force-recreate
 ```
 
 ## Project main used libraries
-- Go-colly, Go-goquery is used by scraped dataq
+- Go-colly, Go-goquery is used by scraped data
 - Go-gorm is used by operate database
 - Go-gron is used by schedule tasks
 

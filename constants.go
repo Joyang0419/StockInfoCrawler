@@ -14,5 +14,5 @@ var (
 const (
 	DateStringFormat       = "2006-01-02"
 	Todate                 = "2018-01-01"
-	DailyPriceSleepSeconds = 5
+	DailyPriceSleepSeconds = 3
 )
