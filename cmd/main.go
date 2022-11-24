@@ -25,7 +25,7 @@ func main() {
 		cron.WithSeconds(),
 		cron.WithLogger(cron.VerbosePrintfLogger(log.New(os.Stdout, "cron: ", log.LstdFlags))))
 
-	_, err := c.AddFunc("0 0 14 * * *", func() {
+	_, err := c.AddFunc("0 0 15 * * *", func() {
 		stockCodes := implements.BasicRepo.GetStockCodes()
 		dailyPriceCalculateDate := implements.DailyRepo.GetCalculateTimestamp("daily_price")
 		var fromDate, toDate time.Time
